@@ -1,0 +1,9 @@
+.git
+.github
+docker-compose.yml
+Makefile
+coupon-app
+*.json
+
+LICENSE
+README.md
