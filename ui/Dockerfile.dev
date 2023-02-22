@@ -1,10 +1,10 @@
 FROM node:18-alpine3.16
+RUN mkdir -p /app/node_modules && chown -R node:node /app/node_modules
 WORKDIR /app
-RUN chown -R node:node /app
+USER node
+
 COPY --chown=node:node package.json package-lock.json ./
 RUN npm ci --quiet
 COPY --chown=node:node . .
-
-USER node
 EXPOSE 5173
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+CMD ["/bin/sh"]

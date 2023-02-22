@@ -3,7 +3,9 @@ services:
   frontend:
     container_name: coupon-ui
     image: coupon-ui
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     command: sh -c "npm run dev"  # comment out before installing svelte
     # command: /bin/sh
     ports:
