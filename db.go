@@ -31,6 +31,8 @@ func Open(dsn string) (*DB, error) {
 func (d *DB) initTable() error {
 	_, err := d.db.Exec(`CREATE TABLE IF NOT EXISTS coupons
 		(id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        name TEXT,
+        description TEXT,
         redemptions INT,
         expiry_date TIMESTAMP)`)
 	if err != nil {
@@ -43,7 +45,7 @@ func (d *DB) initTable() error {
 func (d *DB) GetCoupon(id int64) (*Coupon, error) {
 	var coupon Coupon
 	err := d.db.QueryRow("SELECT * FROM coupons WHERE id=$1", id).
-		Scan(&coupon.Id, &coupon.Redemptions, &coupon.ExpiryDate)
+		Scan(&coupon.Id, &coupon.Name, &coupon.Description, &coupon.Redemptions, &coupon.ExpiryDate)
 
 	if err == sql.ErrNoRows {
 		return nil, fmt.Errorf("db: coupon %d does not exist", id)
@@ -66,7 +68,7 @@ func (d *DB) GetAllCoupons() ([]*Coupon, error) {
 
 	for rows.Next() {
 		var coupon Coupon
-		if err := rows.Scan(&coupon.Id, &coupon.Redemptions, &coupon.ExpiryDate); err != nil {
+		if err := rows.Scan(&coupon.Id, &coupon.Name, &coupon.Description, &coupon.Redemptions, &coupon.ExpiryDate); err != nil {
 			return nil, fmt.Errorf("db: get coupons failed: %v", err)
 		}
 		coupons = append(coupons, &coupon)
@@ -80,12 +82,12 @@ func (d *DB) GetAllCoupons() ([]*Coupon, error) {
 
 func (d *DB) AddCoupon(c Coupon) error {
 	stmt, err := d.db.Prepare(`INSERT INTO coupons
-        (redemptions, expiry_date) VALUES ($1, $2)`)
+        (name, description, redemptions, expiry_date) VALUES ($1, $2, $3, $4)`)
 	if err != nil {
 		return fmt.Errorf("db: add coupon %d failed: %v", c.Id, err)
 	}
 
-	if _, err := stmt.Exec(c.Redemptions, c.ExpiryDate); err != nil {
+	if _, err := stmt.Exec(c.Name, c.Description, c.Redemptions, c.ExpiryDate); err != nil {
 		return fmt.Errorf("db: add coupon %d failed: %v", c.Id, err)
 	}
 	return nil

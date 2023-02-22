@@ -13,6 +13,8 @@ type User struct {
 
 type Coupon struct {
 	Id          int64     `json:"id" db:"id"`
+	Name        string    `json:"name" db:"name"`
+	Description string    `json:"desc" db:"description"`
 	Redemptions int       `json:"redemptions" db:"redemptions"`
 	ExpiryDate  time.Time `json:"expiry_date" db:"expiry_date"`
 }
