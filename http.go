@@ -12,6 +12,15 @@ import (
 
 type envelope map[string]interface{}
 
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding")
+		next.ServeHTTP(w, r)
+	})
+}
+
 func (a *App) getCouponsHandler(rw http.ResponseWriter, r *http.Request) {
 	coupons, err := a.db.GetAllCoupons()
 	if err != nil {

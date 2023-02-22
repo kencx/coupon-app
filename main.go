@@ -37,6 +37,8 @@ func (a *App) Run(port string) error {
 	if err != nil {
 		return err
 	}
+
+	log.Printf("Server started at %s", port)
 	return nil
 }
 
@@ -72,6 +74,7 @@ func main() {
 	}
 
 	api := r.PathPrefix("/api").Subrouter()
+	api.Use(corsMiddleware)
 	api.HandleFunc("/coupons", app.getCouponsHandler).Methods(http.MethodGet)
 	api.HandleFunc("/coupons", app.addCouponHandler).Methods(http.MethodPost)
 	api.HandleFunc("/{id:[0-9]+}/redeem", app.redeemCouponHandler).Methods(http.MethodPost)
