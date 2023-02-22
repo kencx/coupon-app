@@ -1,5 +1,6 @@
 <script>
   import { invalidate } from "$app/navigation";
+  import { PUBLIC_API_URL } from '$env/static/public';
 
   export let id;
   export let name;
@@ -10,7 +11,7 @@
   async function redeem(id) {
     let abort = new AbortController()
     try {
-      const response = await fetch(`http://localhost:8080/api/${id}/redeem`, {
+      const response = await fetch(`${PUBLIC_API_URL}/api/${id}/redeem`, {
         method: 'POST',
         signal: abort.signal
       });

@@ -1,5 +1,7 @@
+import { PUBLIC_API_URL } from '$env/static/public';
+
 export async function load({ fetch, depends }) {
-    const res = await fetch(`http://localhost:8080/api/coupons`);
+    const res = await fetch(`${PUBLIC_API_URL}/api/coupons`);
 
     if (!res.ok) {
         return {
