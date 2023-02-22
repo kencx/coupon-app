@@ -1,5 +1,7 @@
 coupon-app
 *.json
+!package.json
+!package-lock.json
 
 ui/node_modules
 ui/build/*
