@@ -1,2 +1,6 @@
 coupon-app
 *.json
+
+ui/node_modules
+ui/build/*
+ui/.svelte-kit/*
