@@ -1,7 +1,8 @@
 <script>
-  import AddModal from "$lib/AddModal.svelte";
+  import Modal from "$lib/Modal.svelte";
 
   let showModal = false;
+  let addModal;
 </script>
 
 <main class="container">
@@ -19,21 +20,25 @@
   <slot />
 </main>
 
-<AddModal bind:showModal>
+<Modal bind:showModal bind:this={addModal}>
   <article>
     <form>
       <h3>Add Coupon</h3>
       <input
+        class="modal-input"
         type="text"
         id="code"
         name="code"
         placeholder="Coupon code"
         required
       />
-      <button on:click>Submit</button>
+      <div class="modal-buttons">
+        <button on:click={() => addModal.close()}>Cancel</button>
+        <button>Submit</button>
+      </div>
     </form>
   </article>
-</AddModal>
+</Modal>
 
 <style>
   .container {
@@ -94,5 +99,13 @@
   }
   button {
     border-radius: 6px;
+  }
+
+  .modal-input {
+    width: 100%;
+  }
+
+  .modal-buttons {
+    margin: 1rem 0;
   }
 </style>

@@ -1,6 +1,9 @@
 <script>
-  import { invalidate } from "$app/navigation";
   import { PUBLIC_API_URL } from "$env/static/public";
+  import Modal from "$lib/Modal.svelte";
+
+  let showRedeemModal = false;
+  let redeemModal;
 
   export let id;
   export let name;
@@ -33,6 +36,7 @@
       throw Error("Something went wrong");
     }
 
+    showRedeemModal = true
     // refresh coupon on each redemption
     refresh(id);
   }
@@ -76,6 +80,14 @@
   </footer>
 </article>
 
+
+<Modal bind:showModal={showRedeemModal} bind:this={redeemModal}>
+  <div class="modal">
+    Coupon redeemed!
+    <button on:click={() => redeemModal.close()}>OK</button>
+  </div>
+</Modal>
+
 <style>
   h4 {
     margin-bottom: 0;
@@ -108,5 +120,11 @@
   article > footer {
     margin-top: 2rem;
     margin-bottom: calc(2rem * -1);
+  }
+
+  .modal {
+    display: grid;
+    justify-content: center;
+    grid-gap: 1rem;
   }
 </style>

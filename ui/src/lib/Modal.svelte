@@ -2,6 +2,10 @@
   export let showModal;
   let dialog; // HTMLDialogElement
 
+  export function close() {
+    dialog.close();
+  }
+
   $: if (dialog && showModal) dialog.showModal();
 </script>
 
@@ -18,7 +22,7 @@
 
 <style>
   dialog {
-    max-width: 32em;
+    width: 32rem;
     border-radius: 0.2em;
     border: none;
     padding: 0;
