@@ -7,7 +7,7 @@
 
 <div class="grid">
   {#if data.coupons.length < 1}
-    <p>{emptyText}</p>
+    <div class="error-text">{emptyText}</div>
   {:else}
     {#each data.coupons as coupon}
       <div><Coupon {...coupon} /></div>
@@ -36,6 +36,10 @@
     );
     grid-gap: var(--grid-layout-gap);
     margin-bottom: 4rem;
+  }
+
+  .error-text {
+    text-align: center;
   }
 
   /*

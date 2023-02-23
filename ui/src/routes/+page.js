@@ -4,10 +4,10 @@ export async function load({ fetch, depends }) {
   try {
     const res = await fetch(`${PUBLIC_API_URL}/api/coupons`);
     depends("coupons:fetch");
-
-    if (!res.ok) {
+    if (res.status == 204 || !res.ok) {
       return { coupons: [] };
     }
+
     return await res.json();
   } catch (err) {
     console.error(err);
