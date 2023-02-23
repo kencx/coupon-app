@@ -2,8 +2,9 @@
   import { PUBLIC_API_URL } from "$env/static/public";
   import Modal from "$lib/Modal.svelte";
 
-  let showRedeemModal = false;
   let redeemModal;
+  let redeemModalText;
+  let showRedeemModal = false;
 
   export let id;
   export let name;
@@ -25,7 +26,8 @@
       if (!res.ok) {
         // TODO handle error when fully redeemed
         if (res.status == 400) {
-          console.log("Coupon fully redeemed");
+          showRedeemModal = true
+          redeemModalText = "Coupon fully redeemed!"
           return;
         }
 
@@ -37,6 +39,7 @@
     }
 
     showRedeemModal = true
+    redeemModalText = "Coupon redeemed!"
     // refresh coupon on each redemption
     refresh(id);
   }
@@ -83,7 +86,7 @@
 
 <Modal bind:showModal={showRedeemModal} bind:this={redeemModal}>
   <div class="modal">
-    Coupon redeemed!
+    {redeemModalText}
     <button on:click={() => redeemModal.close()}>OK</button>
   </div>
 </Modal>
