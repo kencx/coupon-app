@@ -1,7 +1,3 @@
-<script context="module">
-	export const prerender = true;
-</script>
-
 <script>
   import AddModal from "$lib/AddModal.svelte";
 
@@ -20,78 +16,83 @@
     </ul>
   </nav>
 
-  <slot></slot>
+  <slot />
 </main>
 
 <AddModal bind:showModal>
   <article>
     <form>
       <h3>Add Coupon</h3>
-      <input type="text" id="code" name="code" placeholder="Coupon code" required>
+      <input
+        type="text"
+        id="code"
+        name="code"
+        placeholder="Coupon code"
+        required
+      />
       <button on:click>Submit</button>
     </form>
   </article>
 </AddModal>
 
 <style>
-.container {
-  width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 1rem;
-  padding-left: 1rem;
-}
-
-@media (min-width: 576px) {
   .container {
-    max-width: 510px;
-    padding-right: 0;
-    padding-left: 0;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 1rem;
+    padding-left: 1rem;
   }
-}
-@media (min-width: 768px) {
-  .container {
-    max-width: 700px;
+
+  @media (min-width: 576px) {
+    .container {
+      max-width: 510px;
+      padding-right: 0;
+      padding-left: 0;
+    }
   }
-}
-@media (min-width: 992px) {
-  .container {
-    max-width: 920px;
+  @media (min-width: 768px) {
+    .container {
+      max-width: 700px;
+    }
   }
-}
-@media (min-width: 1200px) {
-  .container {
-    max-width: 1130px;
+  @media (min-width: 992px) {
+    .container {
+      max-width: 920px;
+    }
   }
-}
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 1130px;
+    }
+  }
 
-:where(nav li)::before {
-  float: left;
-  content: "";
-}
+  :where(nav li)::before {
+    float: left;
+    content: "";
+  }
 
-nav,
-nav ul {
-  display: flex;
-}
+  nav,
+  nav ul {
+    display: flex;
+  }
 
-nav {
-  justify-content: space-between;
-  margin-bottom: 2.5rem;
-}
-nav ul {
-  align-items: center;
-  margin-bottom: 0;
-  padding: 0;
-  list-style: none;
-}
-nav li {
-  display: inline-block;
-  margin: 0;
-  padding: 1rem 0.5rem;
-}
-button {
-  border-radius: 6px;
-}
-
+  nav {
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+  }
+  nav ul {
+    align-items: center;
+    margin-bottom: 0;
+    padding: 0;
+    list-style: none;
+  }
+  nav li {
+    display: inline-block;
+    margin: 0;
+    padding: 1rem 0.5rem;
+  }
+  button {
+    border-radius: 6px;
+  }
 </style>

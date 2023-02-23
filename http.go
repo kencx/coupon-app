@@ -21,6 +21,17 @@ func corsMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+func (a *App) getCouponHandler(rw http.ResponseWriter, r *http.Request) {
+	id := handleInt64("id", rw, r)
+	coupon, err := a.db.GetCoupon(id)
+	if err != nil {
+		errorResponse(rw, http.StatusInternalServerError, fmt.Sprint(err))
+		return
+	}
+
+	writeResponse(rw, http.StatusOK, envelope{"coupons": []*Coupon{coupon}})
+}
+
 func (a *App) getCouponsHandler(rw http.ResponseWriter, r *http.Request) {
 	coupons, err := a.db.GetAllCoupons()
 	if err != nil {

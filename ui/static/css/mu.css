@@ -1,4 +1,6 @@
-*, *:after, *:before {
+*,
+*:after,
+*:before {
   box-sizing: border-box;
 }
 
@@ -12,7 +14,11 @@ body {
   padding: 0 20px;
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: 1.2;
 }
@@ -39,27 +45,35 @@ table {
   padding-bottom: 25px;
 }
 
-td, th, hr {
+td,
+th,
+hr {
   border-bottom: 1px solid #ddd;
 }
 
-button, select {
+button,
+select {
   background: #ddd;
   border: 0;
   padding: 9px 20px;
   font-size: 14px;
 }
 
-input, table {
+input,
+table {
   font-size: 16px;
 }
 
-input, td, th {
+input,
+td,
+th {
   padding: 5px;
   vertical-align: bottom;
 }
 
-code, pre, button:hover {
+code,
+pre,
+button:hover {
   background: #eee;
 }
 
