@@ -26,8 +26,8 @@
       if (!res.ok) {
         // TODO handle error when fully redeemed
         if (res.status == 400) {
-          showRedeemModal = true
-          redeemModalText = "Coupon fully redeemed!"
+          showRedeemModal = true;
+          redeemModalText = "Coupon fully redeemed!";
           return;
         }
 
@@ -38,8 +38,8 @@
       throw Error("Something went wrong");
     }
 
-    showRedeemModal = true
-    redeemModalText = "Coupon redeemed!"
+    showRedeemModal = true;
+    redeemModalText = "Coupon redeemed!";
     // refresh coupon on each redemption
     refresh(id);
   }
@@ -82,7 +82,6 @@
     </small>
   </footer>
 </article>
-
 
 <Modal bind:showModal={showRedeemModal} bind:this={redeemModal}>
   <div class="modal">
