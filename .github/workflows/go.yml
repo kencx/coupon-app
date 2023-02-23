@@ -1,12 +1,12 @@
 ---
-name: Run tests
+name: Lint and test Go
 on:
   push:
     branches:
       - master
 
 jobs:
-  test:
+  lint_and_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout codebase

@@ -2,6 +2,7 @@ coupon-app
 *.json
 !package.json
 !package-lock.json
+!.eslintrc.json
 
 ui/node_modules
 ui/build/*
