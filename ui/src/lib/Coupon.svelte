@@ -8,6 +8,11 @@
   export let redemptions;
   export let expiry_date;
 
+  function format_date(date) {
+    const d = new Date(date);
+    return d.toLocaleDateString();
+  }
+
   async function redeem(id) {
     try {
       const res = await fetch(`${PUBLIC_API_URL}/api/${id}/redeem`, {
@@ -66,7 +71,7 @@
     <small>
       {redemptions} uses left
       <br />
-      Expires: {expiry_date}
+      Expires: {format_date(expiry_date)}
     </small>
   </footer>
 </article>
