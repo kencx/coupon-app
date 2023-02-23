@@ -1,6 +1,6 @@
 binary = coupon-app
 
-.PHONY: help build run clean cover unit-test test dcu
+.PHONY: help build run clean cover test dcb dev seed
 
 default: help
 
@@ -33,3 +33,11 @@ test:
 ## dcb: build Dockerfile
 dcb:
 	docker compose build app
+
+dev:
+	@docker compose up -d db app
+	cd ui && docker compose up -d
+
+## seed: seed database
+seed: dev
+	curl -s -X POST --header 'application/json' -d @payload.json http://localhost:8080/api/coupons

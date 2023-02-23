@@ -1,16 +1,17 @@
 version: "3.6"
 services:
   frontend:
-    container_name: coupon-ui
+    container_name: coupon-ui-dev
     image: coupon-ui
     build:
       context: .
       dockerfile: Dockerfile.dev
     command: sh -c "npm run dev"  # comment out before installing svelte
     # command: /bin/sh
+    environment:
+      PUBLIC_API_URL: "http://localhost:8080"
     ports:
       - 5173:5173
-    working_dir: /app
     volumes:
       - ./:/app
       - ./node_modules:/app/node_modules
