@@ -14,10 +14,12 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var host = "postgres"
+var hostDB = "postgres"
+var hostRedis = "redis"
+var port = "8080"
 
 const (
-	port     = 5432
+	portDB   = 5432
 	user     = "postgres"
 	password = "postgres"
 	dbname   = "postgres"
@@ -37,8 +39,6 @@ func (a *App) Run(port string) error {
 	if err != nil {
 		return err
 	}
-
-	log.Printf("Server started at %s", port)
 	return nil
 }
 
@@ -48,24 +48,38 @@ func (a *App) Close() error {
 	}
 	log.Println("Database connection closed")
 
+	if err := a.db.redis.Close(); err != nil {
+		return err
+	}
+	log.Println("Redis connection closed")
+
 	tc, cancel := context.WithTimeout(context.Background(), closeTimeout)
 	defer cancel()
 	return a.server.Shutdown(tc)
 }
 
 func init() {
+	if os.Getenv("PORT") != "" {
+		port = os.Getenv("PORT")
+	}
 	if os.Getenv("POSTGRES_HOST") != "" {
-		host = os.Getenv("POSTGRES_HOST")
+		hostDB = os.Getenv("POSTGRES_HOST")
+	}
+	if os.Getenv("REDIS_HOST") != "" {
+		hostRedis = os.Getenv("REDIS_HOST")
 	}
 }
 
 func main() {
-	dsn := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=disable", user, password, host, port, dbname)
-	database, err := Open(dsn)
+	dbDSN := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=disable", user, password, hostDB, portDB, dbname)
+	cacheDSN := fmt.Sprintf("%s:6379", hostRedis)
+
+	database, err := Open(dbDSN, cacheDSN)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	log.Println("Database connection successfully established!")
+	log.Println("Redis connection successfully established")
 
 	r := mux.NewRouter()
 	app := &App{
@@ -81,7 +95,8 @@ func main() {
 	api.HandleFunc("/{id:[0-9]+}/redeem", app.redeemCouponHandler).Methods(http.MethodPost)
 	api.HandleFunc("/{id:[0-9]+}", app.deleteCouponHandler).Methods(http.MethodDelete)
 
-	go app.Run(":8080")
+	go app.Run(fmt.Sprintf(":%s", port))
+	log.Printf("Server started at %s", port)
 
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)

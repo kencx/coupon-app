@@ -17,6 +17,20 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      db:
+        condition: service_healthy
+
   app:
     container_name: coupon-app
     build: .
@@ -26,6 +40,8 @@ services:
       - 8080:8080
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
 
   ui:
