@@ -89,6 +89,7 @@ func main() {
 
 	api := r.PathPrefix("/api").Subrouter()
 	api.Use(corsMiddleware)
+	api.Use(logMiddleware)
 	api.HandleFunc("/coupon/{id:[0-9]+}", app.getCouponHandler).Methods(http.MethodGet)
 	api.HandleFunc("/coupons", app.getCouponsHandler).Methods(http.MethodGet)
 	api.HandleFunc("/coupons", app.addCouponHandler).Methods(http.MethodPost)

@@ -24,7 +24,6 @@
       });
 
       if (!res.ok) {
-        // TODO handle error when fully redeemed
         if (res.status == 400) {
           showRedeemModal = true;
           redeemModalText = "Coupon fully redeemed!";
@@ -35,7 +34,7 @@
       }
     } catch (err) {
       console.error(err);
-      throw Error("Something went wrong");
+      return
     }
 
     showRedeemModal = true;
@@ -62,6 +61,7 @@
       })
       .catch((err) => {
         console.error(err);
+        return
       });
   }
 </script>
