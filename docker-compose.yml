@@ -57,7 +57,8 @@ services:
     volumes:
       - "./nginx.conf:/etc/nginx/nginx.conf"
     networks:
-      - proxy
+      proxy:
+        ipv4_address: 10.0.10.2
 
   ui:
     container_name: coupon-ui
@@ -67,19 +68,24 @@ services:
     image: coupon-ui
     restart: unless-stopped
     environment:
-      PUBLIC_API_URL: "http://nginx:80"
+      # cannot be http://nginx:80 as browser cannot resolve
+      PUBLIC_API_URL: "http://10.0.10.2:80"
     ports:
       - 5173:5173
-    networks:
-      - proxy
     depends_on:
       - db
       - redis
       - app
+      - proxy
+    networks:
       - proxy
 
 networks:
   api:
     name: api
   proxy:
-    external: true
+    name: proxy
+    ipam:
+      config:
+        - subnet: 10.0.10.0/24
+          gateway: 10.0.10.1
