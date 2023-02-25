@@ -9,19 +9,17 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
-    ports:
-      - 5432:5432
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       interval: 3s
       timeout: 5s
       retries: 5
+    networks:
+      - api
 
   redis:
     image: redis:alpine
     container_name: redis
-    ports:
-      - 6379:6379
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 3s
@@ -30,19 +28,36 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - api
 
   app:
     container_name: coupon-app
     build: .
     image: coupon-app
     restart: unless-stopped
-    ports:
-      - 8080:8080
+    environment:
+      POSTGRES_HOST: "postgres"
+      REDIS_HOST: "redis"
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
+    networks:
+      - api
+      - proxy
+
+  proxy:
+    container_name: nginx
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+    networks:
+      - proxy
 
   ui:
     container_name: coupon-ui
@@ -52,9 +67,18 @@ services:
     image: coupon-ui
     restart: unless-stopped
     environment:
-      PUBLIC_API_URL: "http://coupon-app:8080"
+      PUBLIC_API_URL: "http://nginx:80"
     ports:
       - 5173:5173
+    networks:
+      - proxy
     depends_on:
       - db
+      - redis
       - app
+
+networks:
+  api:
+    name: api
+  proxy:
+    external: true
