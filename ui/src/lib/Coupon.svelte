@@ -34,7 +34,7 @@
       }
     } catch (err) {
       console.error(err);
-      return
+      return;
     }
 
     showRedeemModal = true;
@@ -61,7 +61,7 @@
       })
       .catch((err) => {
         console.error(err);
-        return
+        return;
       });
   }
 </script>
