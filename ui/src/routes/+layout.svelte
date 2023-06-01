@@ -1,8 +1,7 @@
 <script>
-  import Modal from "$lib/Modal.svelte";
+  import AddCoupon from "$lib/AddCoupon.svelte";
 
-  let showModal = false;
-  let addModal;
+  let addCouponModal;
 </script>
 
 <main class="container">
@@ -12,7 +11,7 @@
     </ul>
     <ul>
       <li>
-        <button on:click={() => (showModal = true)}>+ Add</button>
+        <button on:click={() => addCouponModal.open()}>+ Add</button>
       </li>
     </ul>
   </nav>
@@ -20,25 +19,7 @@
   <slot />
 </main>
 
-<Modal bind:showModal bind:this={addModal}>
-  <article>
-    <form>
-      <h3>Add Coupon</h3>
-      <input
-        class="modal-input"
-        type="text"
-        id="code"
-        name="code"
-        placeholder="Coupon code"
-        required
-      />
-      <div class="modal-buttons">
-        <button on:click={() => addModal.close()}>Cancel</button>
-        <button>Submit</button>
-      </div>
-    </form>
-  </article>
-</Modal>
+<AddCoupon bind:this={addCouponModal} />
 
 <style>
   .container {
@@ -99,13 +80,5 @@
   }
   button {
     border-radius: 6px;
-  }
-
-  .modal-input {
-    width: 100%;
-  }
-
-  .modal-buttons {
-    margin: 1rem 0;
   }
 </style>

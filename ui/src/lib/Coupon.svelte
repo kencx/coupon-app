@@ -4,7 +4,6 @@
 
   let redeemModal;
   let redeemModalText;
-  let showRedeemModal = false;
 
   export let id;
   export let name;
@@ -25,7 +24,8 @@
 
       if (!res.ok) {
         if (res.status == 400) {
-          showRedeemModal = true;
+          // TODO handle coupon expired
+          redeemModal.open();
           redeemModalText = "Coupon fully redeemed!";
           return;
         }
@@ -37,7 +37,7 @@
       return;
     }
 
-    showRedeemModal = true;
+    redeemModal.open();
     redeemModalText = "Coupon redeemed!";
     // refresh coupon on each redemption
     refresh(id);
@@ -83,7 +83,7 @@
   </footer>
 </article>
 
-<Modal bind:showModal={showRedeemModal} bind:this={redeemModal}>
+<Modal bind:this={redeemModal}>
   <div class="modal">
     {redeemModalText}
     <button on:click={() => redeemModal.close()}>OK</button>

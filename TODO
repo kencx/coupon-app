@@ -1,0 +1,6 @@
+
+- Add date_added field
+- Redeem expired coupon should give proper error
+- Add coupons by coupon code only
+    - Coupon codes can be added by a separate (admin) endpoint
+- Validate coupon code

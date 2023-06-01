@@ -1,30 +1,10 @@
-binary = coupon-app
-
-.PHONY: help build run clean cover test dcb dev seed
+.PHONY: help test dcb dcu dcud seed
 
 default: help
 
 help:
 	@echo 'Usage:'
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' | sed -e 's/^/ /'
-
-## build: build binary
-build:
-	go build -v -o ${binary} .
-
-## run: run binary
-run:
-	./${binary}
-
-## clean: remove binaries, dist
-clean:
-	if [ -f ${binary} ]; then rm ${binary}; fi
-	go clean
-
-## cover: get code coverage
-cover:
-	go test ./... -coverprofile cover.out
-	go tool cover -html=cover.out
 
 ## test: run all tests
 test:
@@ -34,9 +14,13 @@ test:
 dcb:
 	docker compose build app
 
-dev:
-	@docker compose up -d db app
-	cd ui && docker compose up -d
+## dcu: bring up prod docker stack
+dcu:
+	docker compose up -d
+
+## dcud: bring up dev docker stack
+dcud:
+	docker compose --file docker-compose.dev.yml up -d
 
 ## seed: seed database
 seed: dev
